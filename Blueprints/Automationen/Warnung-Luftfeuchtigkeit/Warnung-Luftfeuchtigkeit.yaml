@@ -1,7 +1,7 @@
 blueprint:
   name: Luftfeuchtigkeits-Warnung
   description: Warnt bei erhöhter/zu hoher Luftfeuchtigkeit in einem Raum, sofern das Fenster geschlossen ist.
-  source_url: 
+  source_url: https://github.com/Schroeder0815/Homeassistant/blob/main/Blueprints/Automationen/Warnung-Luftfeuchtigkeit/Warnung-Luftfeuchtigkeit.yaml
   input:
     humidity_sensor:
       name: Feuchtigkeitssensor
