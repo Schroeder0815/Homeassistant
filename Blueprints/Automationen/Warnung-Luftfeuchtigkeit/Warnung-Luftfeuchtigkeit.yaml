@@ -1,9 +1,12 @@
 blueprint:
   name: Luftfeuchtigkeits-Warnung
-  description: Warnt bei erhöhter/zu hoher Luftfeuchtigkeit in einem Raum, sofern das Fenster geschlossen ist. Intergration --- Thermal Comfort --- inkl. Absoluter Luftfeuchtigkeit für draußen und den entsprechenden Raum, sowie ein Sensor zur jeweiligen Differenz (angelegt als Sensor-Template-Helfer -Diff. absolute Luftfeuchtigkeit {Raum} zu außen-) ist notwendig. Hier ein Beispiel für den Code vom Sensor-Template-Helfer: {{ (( float(states.sensor.thermal_comfort_bad_absolute_luftfeuchtigkeit.state)) -  ( float(states.sensor.thermal_comfort_garten_absolute_luftfeuchtigkeit.state)))  | float | round (1)    }}
-  domain: automation
-  source_url: https://github.com/Schroeder0815/Homeassistant/blob/main/Blueprints/Automationen/Warnung-Luftfeuchtigkeit/Warnung-Luftfeuchtigkeit.yaml
-  input:
+  description: >-
+      Warnt bei erhöhter/zu hoher Luftfeuchtigkeit in einem Raum, sofern das
+      Fenster geschlossen ist. Intergration --- Thermal Comfort --- inkl.
+      Absoluter Luftfeuchtigkeit für draußen und den entsprechenden Raum,
+      sowie ein Sensor zur jeweiligen Differenz (angelegt als
+      Sensor-Template-Helfer -Diff. absolute Luftfeuchtigkeit {Raum} zu
+    input:
     humidity_diff_sensor:
       name: Differenz-Feuchtigkeitssensor (absolut innen zu außen)
       selector:
