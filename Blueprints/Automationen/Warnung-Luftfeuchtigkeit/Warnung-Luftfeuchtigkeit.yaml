@@ -4,18 +4,29 @@ blueprint:
   domain: automation
   source_url: https://github.com/Schroeder0815/Homeassistant/blob/main/Blueprints/Automationen/Warnung-Luftfeuchtigkeit/Warnung-Luftfeuchtigkeit.yaml
   input:
-    humidity_sensor:
-      name: Feuchtigkeitssensor
+    humidity_diff_sensor:
+      name: Differenz-Feuchtigkeitssensor (innen zu außen)
       selector:
         entity:
           domain: sensor
-          device_class: humidity
+    absolute_humidity_sensor:
+      name: Absoluter Feuchtigkeitssensor (Raum, in %)
+      selector:
+        entity:
+          domain: sensor
+    absolute_threshold:
+      name: Absolute Schwelle (in %)
+      default: 59
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
     window_sensor:
       name: Fenstersensor
       selector:
         entity:
           domain: binary_sensor
-          device_class: window
     room_name:
       name: Raumname (für die Nachricht)
       selector:
@@ -28,6 +39,14 @@ blueprint:
           min: 0
           max: 10
           step: 0.1
+    for_warn:
+      name: Verzögerung "erhöht" (Minuten)
+      default: 5
+      selector:
+        number:
+          min: 0
+          max: 60
+          step: 1
     threshold_critical:
       name: Schwelle "zu hoch"
       default: 3.5
@@ -36,21 +55,36 @@ blueprint:
           min: 0
           max: 10
           step: 0.1
+    for_critical:
+      name: Verzögerung "zu hoch" (Minuten)
+      default: 15
+      selector:
+        number:
+          min: 0
+          max: 60
+          step: 1
 
 triggers:
   - trigger: numeric_state
-    entity_id: !input humidity_sensor
+    entity_id: !input humidity_diff_sensor
     above: !input threshold_warn
+    for:
+      minutes: !input for_warn
     id: warn
   - trigger: numeric_state
-    entity_id: !input humidity_sensor
+    entity_id: !input humidity_diff_sensor
     above: !input threshold_critical
+    for:
+      minutes: !input for_critical
     id: critical
 
 conditions:
   - condition: state
     entity_id: !input window_sensor
     state: "off"
+  - condition: numeric_state
+    entity_id: !input absolute_humidity_sensor
+    above: !input absolute_threshold
 
 actions:
   - choose:
