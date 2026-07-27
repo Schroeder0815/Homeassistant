@@ -10,6 +10,7 @@ blueprint:
       Sensor-Template-Helfer: {{ (( float(states.sensor.thermal_comfort_bad_absolute_luftfeuchtigkeit.state)) -
       ( float(states.sensor.thermal_comfort_garten_absolute_luftfeuchtigkeit.state)))
       | float | round (1) }}
+      
   input:
   humidity_diff_sensor:
     name: Differenz-Feuchtigkeitssensor (absolut innen zu außen)
