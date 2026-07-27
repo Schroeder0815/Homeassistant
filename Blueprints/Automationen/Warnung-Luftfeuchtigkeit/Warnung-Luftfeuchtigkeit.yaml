@@ -1,16 +1,16 @@
 blueprint:
   name: Luftfeuchtigkeits-Warnung
-  description: Warnt bei erhöhter/zu hoher Luftfeuchtigkeit in einem Raum, sofern das Fenster geschlossen ist.
+  description: Warnt bei erhöhter/zu hoher Luftfeuchtigkeit in einem Raum, sofern das Fenster geschlossen ist. Intergration --- Thermal Comfort --- inkl. Absoluter Luftfeuchtigkeit für draußen und den entsprechenden Raum, sowie ein Sensor zur jeweiligen Differenz (angelegt als Sensor-Template-Helfer -Diff. absolute Luftfeuchtigkeit {Raum} zu außen-) ist notwendig. 
   domain: automation
   source_url: https://github.com/Schroeder0815/Homeassistant/blob/main/Blueprints/Automationen/Warnung-Luftfeuchtigkeit/Warnung-Luftfeuchtigkeit.yaml
   input:
     humidity_diff_sensor:
-      name: Differenz-Feuchtigkeitssensor (innen zu außen)
+      name: Differenz-Feuchtigkeitssensor (absolut innen zu außen)
       selector:
         entity:
           domain: sensor
-    absolute_humidity_sensor:
-      name: Absoluter Feuchtigkeitssensor (Raum, in %)
+    relativ_humidity_sensor:
+      name:  Luftfeuchtigkeitssensor (relativ) (Raum, in %)
       selector:
         entity:
           domain: sensor
