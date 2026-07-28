@@ -13,7 +13,6 @@ blueprint:
   
   domain: automation
   source_url: https://github.com/Schroeder0815/Homeassistant/blob/main/Blueprints/Automationen/Warnung-Luftfeuchtigkeit/Warnung-Luftfeuchtigkeit.yaml
-  
   input:
     humidity_diff_sensor:
       name: Differenz-Feuchtigkeitssensor (absolut innen zu außen)
@@ -33,11 +32,13 @@ blueprint:
           min: 0
           max: 100
           step: 1
-    window_sensor:
-      name: Fenstersensor
+    window_sensors:
+      name: Fenster-/Tür-/Griffsensor(en) (leer lassen, falls keiner geprüft werden soll)
+      default: []
       selector:
         entity:
-          domain: binary_sensor
+          domain: [binary_sensor, sensor]
+          multiple: true
     room_name:
       name: Raumname (für die Nachricht)
       selector:
@@ -77,6 +78,7 @@ blueprint:
 
 variables:
   room_name: !input room_name
+  window_sensors: !input window_sensors
 
 triggers:
   - trigger: numeric_state
@@ -93,9 +95,9 @@ triggers:
     id: critical
 
 conditions:
-  - condition: state
-    entity_id: !input window_sensor
-    state: "off"
+  - condition: template
+    value_template: >-
+      {{ window_sensors | expand | rejectattr('state','in',['off','closed']) | list | count == 0 }}
   - condition: numeric_state
     entity_id: !input relativ_humidity_sensor
     above: !input absolute_threshold
